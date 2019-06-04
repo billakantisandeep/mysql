@@ -1,12 +1,12 @@
 {% if grains['os_family'] == 'Redhat' %}
 mysql_root_password_set:
   cmd.run:
-    - name: mysqladmin --host localhost --user root password 'temppass' 
-    - unless: mysql --host localhost --user root --password="temppass" --execute="SELECT 1;"
+    - name: mysqladmin --host localhost --user {{pillar['mysql']['root']['name'}} password  '{{pillar['mysql']['root']['password']}}'
+    - unless: mysql --host localhost --user {{pillar['mysql']['root']['name']}} --password="{{pillar['mysql']['root']['password']}}" --execute="SELECT 1;"
 {% endif %}
 
 mysql_root_user:
   mysql_user.present:
-    - name: root
-    - password: temppass
+    - name: {{pillar['mysql']['root']['name']}}
+    - password: {{pillar['mysql']['root']['password']}}
     - host: localhost 
